@@ -7,7 +7,7 @@ async function main() {
 
     const result = await response.json()
 
-    const { GME, MSFT, DIS, BNTX } = result;
+    const { GME, MSFT, DIS, BNTX } = mockData;
 
     const stocks = [GME, MSFT, DIS, BNTX];
 
@@ -17,14 +17,16 @@ async function main() {
         type: 'line',
         data: {
             labels: stocks[0].values.map(value => value.datetime),
-            datasets: stocks.map(stock => ({
-                label: stock.meta.symbol,
-                backgroundColor: getColor(stock.meta.symbol),
-                borderColor: getColor(stock.meta.symbol),
-                data: stock.values.map(value => parseFloat(value.high))
-            }))
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)'
+            }]
         }
     });
+
+
 
     new Chart(highestPriceChartCanvas.getContext('2d'), {
         type: 'bar',
