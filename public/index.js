@@ -17,16 +17,14 @@ async function main() {
         type: 'line',
         data: {
             labels: stocks[0].values.map(value => value.datetime),
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)'
-            }]
+            datasets: stocks.map(stock => ({
+                label: stock.meta.symbol,
+                data: stock.values.map(value => parseFloat(value.high)),
+                backgroundColor: getColor(stock.meta.symbol),
+                borderColor: getColor(stock.meta.symbol),
+            }))
         }
     });
-
-
 
     new Chart(highestPriceChartCanvas.getContext('2d'), {
         type: 'bar',
@@ -47,6 +45,24 @@ async function main() {
         }
     });
 
+}
+
+function findHighest(values) {
+    let highest = 0;
+    values.forEach(value => {
+        if (parseFloat(value.high) > highest) {
+            highest = value.high
+        }
+    })
+    return highest
+}
+
+function calculateAverage(values) {
+    let total = 0;
+    values.forEach(value => {
+        total += parseFloat(value.high)
+    })
+    return total / values.length
 }
 
 main()
